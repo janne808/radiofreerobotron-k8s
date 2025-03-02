@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icecast2-deployment
+  labels:
+    app: icecast2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icecast2
+  template:
+    metadata:
+      labels:
+        app: icecast2
+    spec:
+      containers:
+        - name: icecast2
+          image: docker.io/deepcomp/icecast2:latest
+          imagePullPolicy: "Always"
+          env:
+            - name: ICECAST_ADMIN_USER
+              value: "admin"
+            - name: ICECAST_ADMIN_PASSWORD
+              value: ""
+            - name: ICECAST_SOURCE_PASSWORD
+              value: ""
+            - name: ICECAST_SERVER_HOST
+              value: "icecast.radiofreerobotron.net"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - containerPort: 8000
+              name: icecast2
+
