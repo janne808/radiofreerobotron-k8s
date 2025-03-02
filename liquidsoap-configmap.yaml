@@ -1,0 +1,129 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: liquidsoap-config
+data:
+  freerobotron.liq: |
+    #!/usr/local/bin/liquidsoap
+
+    # define functions
+    def store_meta(m) =
+            m = metadata.export(m)
+            #creating string variables of the input list
+            artist = m["artist"]
+            title = m["title"]
+            comment = m["comment"]
+            process.run("perl /scripts/store_metadb.pl " ^ quote (artist) ^ " " ^ quote(title) ^ " " ^ quote(comment)^ " > /dev/null 2>&1")
+    end
+
+    def sc_request_function() =
+      # Get the first line of my external process
+      p = process.run("perl /scripts/dburi.pl 2>>/scripts/dburi.log")
+      if p.status == "exit" and p.status.code == 0 then  
+         result = string.trim(p.stdout)
+         request.create(result)
+      else
+         null()
+      end
+    end
+
+    # can also be done by setting -v option
+    set("log.stdout", true)
+
+    # use telnet for requests
+    set("server.telnet", true)
+
+    # for debugging
+    set("log.level",5)
+
+    # file sources
+    electropop = playlist("/scripts/electropop.pls", reload = 7200)
+    abstract = playlist("/scripts/abstract.pls", reload = 7200)
+    jingles = playlist("/scripts/jingles.pls", reload = 7200)
+    numbers = playlist("/scripts/numbers.pls", reload = 7200)
+    sc = request.dynamic(retry_delay=60., prefetch=2, sc_request_function)
+    #sc = strip_blank(max_blank=15., sc)
+
+    # main switch
+    radio = fallback([
+                   switch([
+                    ({ 6h-18h }, random(weights=[1,7,1],
+                                 [electropop,sc,numbers])),
+                    ({ 18h-21h },random(weights=[2,1],
+                                 [sc,electropop])),
+                    ({ 21h-24h },random(weights=[1,2],
+                                 [electropop,sc])),
+                    ({ 24h-5h }, random(weights=[1,1,8,3],
+                                 [electropop,numbers,sc,abstract])),
+                    ({ 5h-6h }, numbers),
+                   ]),
+                   electropop])
+
+
+    # add timed events
+    timed_jingles = delay(2000., jingles)
+    radio = fallback([timed_jingles,radio])
+
+    # strip blank
+    #radio = strip_blank(max_blank=8.0, radio)
+
+    # add silence if shit hits the fan
+    #radio = mksafe(radio)
+
+    # handle metadata storage
+    radio.on_track(store_meta)
+
+    # compressor/limiter
+    #radio = ladspa.sc4(rms_peak=4.0,
+    #              attack_time=210.0,
+    #              release_time=160.0,
+    #              threshold_level=-25.0,
+    #              ratio=10.0,
+    #              makeup_gain=6.0,
+    #              radio)
+
+    #radio = ladspa.fastlookaheadlimiter(input_gain=2.0,
+    #                               limit=-6.0,
+    #                               release_time=0.05,
+    #                               radio)
+
+    # Stream it out.. 24k, 128k
+    output.icecast(%vorbis.cbr(
+            samplerate=22050,
+            channels=1,
+            bitrate=24),
+            genre="electronic",
+            url = "http://www.radiofreerobotron.net/",
+            description = "Radio Free Robotron",
+            host="icecast2",
+            port=8000,
+            password=getenv("ICECAST_SOURCE_PASSWORD"),
+            mount="robot_lq.ogg",
+            fallible=true,
+            mean(radio))
+
+    output.icecast(%vorbis.cbr(
+            samplerate=44100,
+            bitrate=128),
+            genre="electronic",
+            url = "http://www.radiofreerobotron.net/",
+            description = "Radio Free Robotron",
+            host="icecast2",
+            port=8000,
+            password=getenv("ICECAST_SOURCE_PASSWORD"),
+            mount="robot.ogg",
+            fallible=true,
+            radio)
+
+    output.icecast(%mp3.cbr(
+            samplerate=44100,
+            bitrate=128),
+            genre="electronic",
+            url = "http://www.radiofreerobotron.net/",
+            description = "Radio Free Robotron",
+            host="icecast2",
+            port=8000,
+            password=getenv("ICECAST_SOURCE_PASSWORD"),
+            mount="robot2.mp3",
+            fallible=true,
+            radio)

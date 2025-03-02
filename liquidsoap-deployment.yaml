@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liquidsoap-deployment
+  labels:
+    app: liquidsoap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: liquidsoap
+  template:
+    metadata:
+      labels:
+        app: liquidsoap
+    spec:
+      initContainers:
+        - name: init-mongodb
+          image: bash:latest
+          command: ['bash', '-c', 'until (echo > /dev/tcp/mongodb/27017) >/dev/null 2>&1; do echo -n .; sleep 2; done']
+        - name: volume-permissions
+          image: bash:latest
+          command: ['bash', '-c', 'chmod -R 755 /music && chown 999:999 /music']
+          volumeMounts:
+          - name: music
+            mountPath: /music
+      containers:
+        - name: liquidsoap
+          image: docker.io/janne808/rfr-liquidsoap:latest
+          imagePullPolicy: "Always"
+          env:
+            - name: SC_CLIENT_ID
+              value: ""
+            - name: SC_CLIENT_SECRET
+              value: ""
+            - name: ICECAST_SOURCE_PASSWORD
+              value: ""
+          volumeMounts:
+            - name: sc
+              mountPath: /sc
+            - name: music
+              mountPath: /music
+#            - name: liquidsoap-config
+#              mountPath: /etc/liquidsoap/script.liq
+#              subPath: freerobotron.liq
+      imagePullSecrets:
+        - name: janne808-regcred
+      volumes:
+        - name: music
+          persistentVolumeClaim:
+            claimName: music 
+        - name: sc
+          emptyDir: {}
+        - name: liquidsoap-config
+          configMap:
+            name: liquidsoap-config
