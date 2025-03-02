@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scwalk-deployment
+  labels:
+    app: scwalk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scwalk
+  template:
+    metadata:
+      labels:
+        app: scwalk
+    spec:
+      initContainers:
+        - name: init-mongodb
+          image: bash:latest
+          command: ['bash', '-c', 'until (echo > /dev/tcp/mongodb/27017) >/dev/null 2>&1; do echo -n .; sleep 2; done']
+      containers:
+        - name: scwalk
+          image: docker.io/janne808/rfr-scwalk:latest
+          imagePullPolicy: "Always"
+          env:
+            - name: SC_CLIENT_ID
+              value: ""
+            - name: SC_CLIENT_SECRET
+              value: ""
+            - name: SC_ROOT_USER_ID
+              value: ""
+      imagePullSecrets:
+        - name: janne808-regcred
