@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoUrl: 'https://github.com/janne808/radiofreerobotron-k8s.git'
+    repoURL: 'https://github.com/janne808/radiofreerobotron-k8s.git'
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
