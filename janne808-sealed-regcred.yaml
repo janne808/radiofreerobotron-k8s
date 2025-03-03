@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: janne808-regcred
+  namespace: radiofreerobotron
+spec:
+  encryptedData:
+    .dockerconfigjson: AgAFttWVRKw1pklnSEilIz11lnSFv1m4lmTCDpnqEzPBopwfKzrJdxRYgsW0hCd8IkyeGVCgtW2xRHB6lYlkae5rFdUxNKu4ib59jm/9885sguLbANFTVzX9ZipwhrpWEqSWsGiO3dfaf66bkSd6VHqQvBvZtyKFKRYy9/OLXdMIygGWLhGrYBFRFPK/q/RJGbWXyUUcW1avGOesv1QvfYW25Dk7BNxhAyXokO+yXkkcB8iWHLSXf2klmLfNQOLbzHdymYM6+gwucIU8QtemyH2wab+KkZdc5uNt/5blWGfcA28Lvnq6OPPtbTLbtBPR80jARXS70/ZoBNkd1tL/pP9BVTKTX7orNVKc4+IJYTaMLTDQnybVqjuGlwO3tazqPFwhC3o284AW8AzX7WVXaL6fX1oDNUen2Yv36IRtKTTku7X+3Vs/2mRGtv9wzMS39i30riMe98iODWbjzPwAhtziCgAxLK7knZlFDbtFgFhz00HfLSRQvG0B5Bg1yamm8+kjInG+2EjPcjbVfnN0B2rwEAELz//qPWWV5ZTrDNtUzOstLEdfSyECDnpt9QCMpnC+7QvehHKOSWJFamdFyYnO48P3Zvs9/N+wNmxN21WKo/eIRbCFehFJK/2uVnzeWgYN2ZREc+wptFWI/ivbxz69uZilQTjEGmYwGjiLyN9ve2/eRvAjFhbZHJzkTyV+WsJVHNM8pNH7Du079EX5QNrBKkdp2wdroc5MGDTzsY2Pf+8mjD4p+h56ubsaeEpEMYZ0lKpSwpMZ1gOZKiFIdu23z6rtBxGr1pdPaMIV2nxE4RzDrOa8MY76lMCoztCpe0t9hPw=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: janne808-regcred
+      namespace: radiofreerobotron
+    type: kubernetes.io/dockerconfigjson

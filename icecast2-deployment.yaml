@@ -22,9 +22,15 @@ spec:
             - name: ICECAST_ADMIN_USER
               value: "admin"
             - name: ICECAST_ADMIN_PASSWORD
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: icecast-env-variables-admin-password
+                  key: icecast-admin-password
             - name: ICECAST_SOURCE_PASSWORD
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: icecast-env-variables-source-password
+                  key: icecast-source-password
             - name: ICECAST_SERVER_HOST
               value: "icecast.radiofreerobotron.net"
             - name: TZ

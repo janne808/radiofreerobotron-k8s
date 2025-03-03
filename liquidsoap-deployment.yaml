@@ -30,11 +30,20 @@ spec:
           imagePullPolicy: "Always"
           env:
             - name: SC_CLIENT_ID
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: liquidsoap-env-variables-sc-client-id
+                  key: liquidsoap-sc-client-id
             - name: SC_CLIENT_SECRET
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: liquidsoap-env-variables-sc-client-secret
+                  key: liquidsoap-sc-client-secret
             - name: ICECAST_SOURCE_PASSWORD
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: icecast-env-variables-source-password
+                  key: icecast-source-password
           volumeMounts:
             - name: sc
               mountPath: /sc
