@@ -7,11 +7,16 @@ data:
     #!/usr/local/bin/liquidsoap
 
     # define functions
+    def sanitize_string(s) =
+        s = regexp(flags=["g"], "[;.&|\"${}]*").replace((fun(_) -> ""), s)
+        s
+    end
+
     def store_meta(m) =
             m = metadata.export(m)
             #creating string variables of the input list
-            artist = m["artist"]
-            title = m["title"]
+            artist = sanitize_string(m["artist"])
+            title = sanitize_string(m["title"])
             comment = m["comment"]
             process.run("perl /scripts/store_metadb.pl " ^ quote (artist) ^ " " ^ quote(title) ^ " " ^ quote(comment)^ " > /dev/null 2>&1")
     end
@@ -97,7 +102,7 @@ data:
             description = "Radio Free Robotron",
             host="icecast2",
             port=8000,
-            password=getenv("ICECAST_SOURCE_PASSWORD"),
+            password=environment.get("ICECAST_SOURCE_PASSWORD"),
             mount="robot_lq.ogg",
             fallible=true,
             mean(radio))
@@ -110,7 +115,7 @@ data:
             description = "Radio Free Robotron",
             host="icecast2",
             port=8000,
-            password=getenv("ICECAST_SOURCE_PASSWORD"),
+            password=environment.get("ICECAST_SOURCE_PASSWORD"),
             mount="robot.ogg",
             fallible=true,
             radio)
@@ -123,7 +128,8 @@ data:
             description = "Radio Free Robotron",
             host="icecast2",
             port=8000,
-            password=getenv("ICECAST_SOURCE_PASSWORD"),
+            password=environment.get("ICECAST_SOURCE_PASSWORD"),
             mount="robot2.mp3",
             fallible=true,
             radio)
+
