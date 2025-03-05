@@ -49,9 +49,9 @@ spec:
               mountPath: /sc
             - name: music
               mountPath: /music
-#            - name: liquidsoap-config
-#              mountPath: /etc/liquidsoap/script.liq
-#              subPath: freerobotron.liq
+            - name: liquidsoap-config
+              mountPath: /etc/liquidsoap/script.liq
+              subPath: freerobotron.liq
       imagePullSecrets:
         - name: janne808-regcred
       volumes:
