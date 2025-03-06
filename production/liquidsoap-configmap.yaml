@@ -79,13 +79,13 @@ data:
     radio.on_track(store_meta)
 
     # compressor/limiter
-    radio = ladspa.sc4(rms_peak=4.0,
-                  attack_time=210.0,
-                  release_time=160.0,
-                  threshold_level=-25.0,
-                  ratio=10.0,
-                  makeup_gain=6.0,
-                  radio)
+    #radio = ladspa.sc4(rms_peak=4.0,
+    #              attack_time=210.0,
+    #              release_time=160.0,
+    #              threshold_level=-25.0,
+    #              ratio=10.0,
+    #              makeup_gain=6.0,
+    #              radio)
 
     #radio = ladspa.fastlookaheadlimiter(input_gain=2.0,
     #                               limit=-6.0,
