@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/janne808/radiofreerobotron-k8s.git'
-    path: 'production'
+    path: 'production-homelab'
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
