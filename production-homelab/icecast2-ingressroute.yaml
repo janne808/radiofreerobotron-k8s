@@ -5,6 +5,7 @@ metadata:
   namespace: radiofreerobotron
 spec:
   entryPoints:
+    - web
     - websecure
   routes:
     - kind: Rule
