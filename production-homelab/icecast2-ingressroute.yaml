@@ -5,7 +5,8 @@ metadata:
   namespace: radiofreerobotron
 spec:
   entryPoints:
-    - websecure
+    websecure:
+      address: ':443'
   routes:
     - kind: Rule
       match: Host(`icecast.radiofreerobotron.home.arpa`)
