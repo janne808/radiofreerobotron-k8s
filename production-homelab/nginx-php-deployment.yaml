@@ -24,8 +24,8 @@ spec:
             - name: nginx-config
               mountPath: /app/index.php
               subPath: index.php
-	  # copy /app to shared nginx container webroot at /var/www/html
-	  # (for some reason php-fpm and nginx can't share the same path for this)
+          # copy /app to shared nginx container webroot at /var/www/html
+          # (for some reason php-fpm and nginx can't share the same path for this)
           lifecycle:
             postStart:
               exec:
