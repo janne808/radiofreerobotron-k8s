@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`radiofreerobotron.home.arpa`)
+      match: Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`)  
       priority: 10
       services:
         - name: nginx-php
@@ -26,7 +26,7 @@ spec:
     - web
   routes:
     - kind: Rule
-      match: Host(`radiofreerobotron.home.arpa`)
+      match: Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`)
       priority: 10
       services:
         - name: nginx-php
