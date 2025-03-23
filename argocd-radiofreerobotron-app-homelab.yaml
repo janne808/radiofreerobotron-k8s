@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: radiofreerobotron-argo-application
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=false, IncludeMutationWebhook=false
 spec:
   project: default
   source:
