@@ -18,7 +18,8 @@ data:
             artist = sanitize_string(m["artist"])
             title = sanitize_string(m["title"])
             comment = m["comment"]
-            process.run("perl /scripts/store_metadb.pl " ^ quote (artist) ^ " " ^ quote(title) ^ " " ^ quote(comment)^ " > /dev/null 2>&1")
+	    # tell perl to use utf-8 arguments with -CA
+            process.run("perl -CA /scripts/store_metadb.pl " ^ quote (artist) ^ " " ^ quote(title) ^ " " ^ quote(comment)^ " > /dev/null 2>&1")
     end
 
     def sc_request_function() =
