@@ -4,7 +4,7 @@ metadata:
   name: radiofreerobotron-argo-application
   namespace: argocd
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true, IncludeMutationWebhook=true
+    argocd.argoproj.io/compare-options: ServerSideDiff=false, IncludeMutationWebhook=false
 spec:
   project: default
   source:
@@ -17,7 +17,7 @@ spec:
   syncPolicy:
     syncOptions:
     - Createnamespace=true
-    - ServerSideApply=true
+    - ServerSideApply=false
     automated:
       selfHeal: true
       prune: true
