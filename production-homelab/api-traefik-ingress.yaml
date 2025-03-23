@@ -9,7 +9,7 @@ spec:
   routes:
     - kind: Rule
       match: (Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`)) && PathPrefix(`/api/`)  
-      priority: 10
+      priority: 20
       services:
         - name: api
           port: 8000
@@ -27,7 +27,7 @@ spec:
   routes:
     - kind: Rule
       match: Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`) && PathPrefix(`/api/`)
-      priority: 10
+      priority: 20
       services:
         - name: api
           port: 8000
