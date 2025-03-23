@@ -20,9 +20,7 @@ spec:
         volumeMounts:
         - name: nginx-www-root
           mountPath: /app
-        - name: web-tar-gz
-          mountPath: /web-tar-gz
-        command: ['sh', '-c', 'tar -xzvf /web-tar-gz/web.tar.gz -C /app']        
+        command: ['sh', '-c', 'wget https://stuff.radiofreerobotron.net/web.tar.gz --quiet -O - | tar -xzvf - -C /app']        
       containers:
         - name: nginx
           image: nginx:latest
@@ -46,9 +44,6 @@ spec:
       imagePullSecrets:
         - name: janne808-regcred
       volumes:
-        - name: web-tar-gz
-          secret:
-            secretName: web-tar-gz
         - name: nginx-www-root
           emptyDir: {}
         - name: nginx-config
