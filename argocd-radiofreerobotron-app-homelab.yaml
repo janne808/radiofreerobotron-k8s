@@ -15,7 +15,7 @@ spec:
   syncPolicy:
     syncOptions:
     - Createnamespace=true
-    - ServerSideApply=true
+    - ServerSideApply=false
     automated:
       selfHeal: true
       prune: true
