@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      initContainers:
+        - name: init-mongodb
+          image: bash:latest
+          command: ['bash', '-c', 'until (echo > /dev/tcp/mongodb/27017) >/dev/null 2>&1; do echo -n .; sleep 2; done']
+      containers:
+        - name: api
+          image: docker.io/janne808/rfr-api:latest
+          imagePullPolicy: "Always"
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://mongodb/"
+          ports:
+            - containerPort: 8000
+              name: api
+      imagePullSecrets:
+        - name: janne808-regcred

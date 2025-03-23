@@ -1,17 +1,17 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: nginx-https-server
+  name: api-https-server
   namespace: radiofreerobotron
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`)  
+      match: (Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`)) && PathPrefix(`/api/`)  
       priority: 10
       services:
-        - name: nginx
+        - name: api
           port: 8000
   tls:
     certResolver: default
@@ -19,17 +19,17 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: nginx-http-server
+  name: api-http-server
   namespace: radiofreerobotron
 spec:
   entryPoints:
     - web
   routes:
     - kind: Rule
-      match: Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`)
+      match: Host(`radiofreerobotron.home.arpa`) || Host(`www.radiofreerobotron.home.arpa`) && PathPrefix(`/api/`)
       priority: 10
       services:
-        - name: nginx
+        - name: api
           port: 8000
       middlewares:
         - name: radiofreerobotron-redirectscheme

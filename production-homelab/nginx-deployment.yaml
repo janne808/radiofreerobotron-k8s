@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      initContainers:
+      - name: init-nginx-web-root
+        image: busybox
+        volumeMounts:
+        - name: nginx-www-root
+          mountPath: /app
+        - name: web-tar-gz
+          mountPath: /web-tar-gz
+        command: ['sh', '-c', 'tar -xzvf /web-tar-gz/web.tar.gz -C /app']        
+      containers:
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: "Always"
+          volumeMounts:
+            - name: nginx-www-root
+              mountPath: /app
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/rfr.conf
+              subPath: rfr.conf
+            - name: nginx-config
+              mountPath: /app/index.html
+              subPath: index.html
+          ports:
+            - containerPort: 8000
+              name: nginx
+      imagePullSecrets:
+        - name: janne808-regcred
+      volumes:
+        - name: web-tar-gz
+          secret:
+            secretName: web-tar-gz
+        - name: nginx-www-root
+          emptyDir: {}
+        - name: nginx-config
+          configMap:
+            name: nginx-config

@@ -39,40 +39,34 @@ data:
     server {
            listen 8000;
            listen [::]:8000;
+           
+           # don't try to redirect to 8000/8443 container ports
+           port_in_redirect off;
+
+           # set content-type charset
+           charset utf-8;
 
            server_name radiofreerobotron.home.arpa www.radiofreerobotron.home.arpa;
 
-           root /var/www/html;
-           index index.html index.php;
-       
-           #location /.well-known/acme-challenge/ {
-           #   root /certbot;
-           #}
+           root /app;
+           index index.html;
 
-            location / {
-                    # First attempt to serve request as file, then
-                    # as directory, then fall back to displaying a 404.
-                    try_files $uri $uri/ =404;
-                    # Uncomment to enable naxsi on this location
-                    # include /etc/nginx/naxsi.rules
-            }
+           location / {
+                   # First attempt to serve request as file, then
+                   # as directory, then fall back to displaying a 404.
+                   try_files $uri $uri/ =404;
+                   # Uncomment to enable naxsi on this location
+                   # include /etc/nginx/naxsi.rules
+           }
 
-            location ~ \.php$ {
-                     try_files $uri $uri/ /index.php;
-                     fastcgi_index index.php;
-                     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                     include fastcgi_params;
-                     fastcgi_pass 127.0.0.1:9000;
-            }
-
-            # deny access to .htaccess files, if Apache's document root
-            # concurs with nginx's one
-            #
-            location ~ /\.ht {
-                    deny all;
-            }
-    }  
-  index.php: |
+           # deny access to .htaccess files, if Apache's document root
+           # concurs with nginx's one
+           #
+           location ~ /\.ht {
+                   deny all;
+           }
+    }
+  index.html: |    
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "https://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
     <html>
 
@@ -92,7 +86,9 @@ data:
     <script>
     $(document).ready(function(){
        $.ajaxSetup ({
-          cache: false
+           cache: false,
+           scriptCharset: "utf-8",
+           contentType: "application/json; charset=utf-8"       
        });
 
        function getRandomInt(min, max) {
@@ -124,7 +120,7 @@ data:
        var current = "";
 
        var nowplaying_update = function() {
-          $.getJSON("nowplaying2.php", function(result){
+          $.getJSON("/api/nowplaying", function(result){
              if(current != result.meta){
                 current = result.meta;
                 if(result.url){
