@@ -40,6 +40,3 @@ spec:
                   key: scwalk-sc-root-user-id
       imagePullSecrets:
         - name: janne808-regcred
-#      securityContext:
-#        readOnlyFileSystem: true
-#        runAsNonRoot: true
