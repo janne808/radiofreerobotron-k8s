@@ -17,6 +17,9 @@ spec:
       containers:
         - name: icecast2
           image: docker.io/deepcomp/icecast2:latest
+          # run as user icecast
+          securityContext:
+            runAsUser: 100
           imagePullPolicy: "Always"
           env:
             - name: ICECAST_ADMIN_USER
