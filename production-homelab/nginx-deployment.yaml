@@ -49,6 +49,6 @@ spec:
         - name: nginx-config
           configMap:
             name: nginx-config
-      securityContext:
-        readOnlyFileSystem: true
-        runAsNonRoot: true
+#      securityContext:
+#        readOnlyFileSystem: true
+#        runAsNonRoot: true
