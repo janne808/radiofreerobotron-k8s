@@ -38,6 +38,3 @@ spec:
           ports:
             - containerPort: 8000
               name: icecast2
-      securityContext:
-        readOnlyFileSystem: true
-
