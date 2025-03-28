@@ -14,6 +14,13 @@ spec:
       labels:
         app: nginx
     spec:
+      initContainers:
+        - name: volume-permissions
+          image: bash:latest
+          command: ['bash', '-c', 'chmod -R 755 /app && chown 65533:65533 /app']
+          volumeMounts:
+          - name: nginx-www-root
+            mountPath: /app
       containers:
         - name: web-root-sync
           image: k8s.gcr.io/git-sync:v3.1.6
