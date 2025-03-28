@@ -24,7 +24,7 @@ spec:
           - name: k8s-deploy-key
             mountPath: /etc/deploy-key-secret
             readOnly: true
-          env:
+        env:
           - name: GIT_SYNC_REPO
             value: "git@github.com/janne808/radiofreerobotron-web-root.git"
           - name: GIT_SYNC_BRANCH
@@ -69,3 +69,4 @@ spec:
         - name: k8s-deploy-key
           secret:
             secretName: k8s-deploy-key
+            defaultMode: 0400
