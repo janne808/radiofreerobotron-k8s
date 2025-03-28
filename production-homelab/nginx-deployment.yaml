@@ -38,7 +38,7 @@ spec:
           - name: GIT_SSH_KEY_FILE
             value: "/etc/deploy-key-secret/id_k8s_deploy"
           - name: GIT_KNOWN_HOSTS
-            value: "true"
+            value: "false"
         - name: nginx
           image: nginx:latest
           imagePullPolicy: "Always"
