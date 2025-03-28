@@ -14,14 +14,35 @@ spec:
       labels:
         app: nginx
     spec:
-      initContainers:
-      - name: init-nginx-web-root
-        image: busybox
-        volumeMounts:
-        - name: nginx-www-root
-          mountPath: /app
-        command: ['sh', '-c', 'wget https://stuff.radiofreerobotron.net/web.tar.gz --quiet -O - | tar -xzvf - -C /app']        
+#      initContainers:
+#      - name: init-nginx-web-root
+#        image: busybox
+#        volumeMounts:
+#        - name: nginx-www-root
+#          mountPath: /app
+#        command: ['sh', '-c', 'wget https://stuff.radiofreerobotron.net/web.tar.gz --quiet -O - | tar -xzvf - -C /app']        
       containers:
+        - name: web-root-sync
+          image: k8s.gcr.io/git-sync:v3.1.6
+          volumeMounts:
+          - name: nginx-www-root
+            mountPath: /tmp/git/app
+          - name: k8s-deploy-key
+            mountPath: /etc/git-secret
+            readOnly: true
+          env:
+          - name: GIT_SYNC_REPO
+            value: git://github.com/janne808/radiofreerobotron-web-root.git
+          - name: GIT_SYNC_BRANCH
+            value: main
+          - name: GIT_SYNC_DEPTH
+            value: "1"
+          - name: GIT_SYNC_DEST
+            value: "app"
+          - name: GIT_SYNC_SSH
+            value: true
+          - name: GIT_SSH_KEY_FILE
+            value: "/etc/git-secret/id_k8s_deploy
         - name: nginx
           image: nginx:latest
           imagePullPolicy: "Always"
@@ -49,3 +70,6 @@ spec:
         - name: nginx-config
           configMap:
             name: nginx-config
+        - name: k8s-deploy-key
+          secret:
+            secretName: k8s-deploy-key
