@@ -14,13 +14,6 @@ spec:
       labels:
         app: nginx
     spec:
-#      initContainers:
-#      - name: init-nginx-web-root
-#        image: busybox
-#        volumeMounts:
-#        - name: nginx-www-root
-#          mountPath: /app
-#        command: ['sh', '-c', 'wget https://stuff.radiofreerobotron.net/web.tar.gz --quiet -O - | tar -xzvf - -C /app']        
       containers:
         - name: web-root-sync
           image: k8s.gcr.io/git-sync:v3.1.6
@@ -32,7 +25,7 @@ spec:
             readOnly: true
           env:
           - name: GIT_SYNC_REPO
-            value: git://github.com/janne808/radiofreerobotron-web-root.git
+            value: "git://github.com/janne808/radiofreerobotron-web-root.git"
           - name: GIT_SYNC_BRANCH
             value: main
           - name: GIT_SYNC_DEPTH
@@ -40,7 +33,7 @@ spec:
           - name: GIT_SYNC_DEST
             value: "app"
           - name: GIT_SYNC_SSH
-            value: true
+            value: "true"
           - name: GIT_SSH_KEY_FILE
             value: "/etc/git-secret/id_k8s_deploy"
         - name: nginx
