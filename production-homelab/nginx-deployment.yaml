@@ -14,7 +14,6 @@ spec:
       labels:
         app: nginx
     spec:
-      initContainers:
       containers:
         - name: web-root-sync
           image: k8s.gcr.io/git-sync:v3.1.6
@@ -24,21 +23,21 @@ spec:
           - name: k8s-deploy-key
             mountPath: /etc/deploy-key-secret
             readOnly: true
-        env:
-          - name: GIT_SYNC_REPO
-            value: "git@github.com/janne808/radiofreerobotron-web-root.git"
-          - name: GIT_SYNC_BRANCH
-            value: "main"
-          - name: GIT_SYNC_DEPTH
-            value: "1"
-          - name: GIT_SYNC_DEST
-            value: "test"
-          - name: GIT_SYNC_SSH
-            value: "true"
-          - name: GIT_SSH_KEY_FILE
-            value: "/etc/deploy-key-secret/id_k8s_deploy"
-          - name: GIT_KNOWN_HOSTS
-            value: "false"
+          env:
+            - name: GIT_SYNC_REPO
+              value: "git@github.com/janne808/radiofreerobotron-web-root.git"
+            - name: GIT_SYNC_BRANCH
+              value: "main"
+            - name: GIT_SYNC_DEPTH
+              value: "1"
+            - name: GIT_SYNC_DEST
+              value: "test"
+            - name: GIT_SYNC_SSH
+              value: "true"
+            - name: GIT_SSH_KEY_FILE
+              value: "/etc/deploy-key-secret/id_k8s_deploy"
+            - name: GIT_KNOWN_HOSTS
+              value: "false"
         - name: nginx
           image: nginx:latest
           imagePullPolicy: "Always"
