@@ -48,7 +48,7 @@ data:
 
            server_name radiofreerobotron.home.arpa www.radiofreerobotron.home.arpa;
 
-           root /app/production-homelab;
+           root /app/repo/production-homelab;
            index index.html;
 
            location / {
