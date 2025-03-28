@@ -26,7 +26,8 @@ spec:
           args:
             - "-ssh"
             - "-repo=git@github.com:janne808/radiofreerobotron-web-root"
-            - "-dest=app/repo/"
+	    - "-root=/tmp/git/app"
+            - "-dest=repo"
             - "-branch=main"
             - "-depth=1"
             - "-ssh-known-hosts=false"
