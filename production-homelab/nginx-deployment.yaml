@@ -15,20 +15,14 @@ spec:
         app: nginx
     spec:
       initContainers:
-        - name: volume-permissions
-          image: bash:latest
-          command: ['bash', '-c', 'chmod -R 755 /app && chown 65533:65533 /app']
-          volumeMounts:
-          - name: nginx-www-root
-            mountPath: /app
       containers:
         - name: web-root-sync
           image: k8s.gcr.io/git-sync:v3.1.6
           volumeMounts:
           - name: nginx-www-root
-            mountPath: /tmp/git/app
+            mountPath: /app
           - name: k8s-deploy-key
-            mountPath: /etc/git-secret
+            mountPath: /etc/deploy-key-secret
             readOnly: true
           env:
           - name: GIT_SYNC_REPO
@@ -42,9 +36,9 @@ spec:
           - name: GIT_SYNC_SSH
             value: "true"
           - name: GIT_SSH_KEY_FILE
-            value: "/etc/git-secret/id_k8s_deploy"
+            value: "/etc/deploy-key-secret/id_k8s_deploy"
           - name: GIT_KNOWN_HOSTS
-            value: "false"
+            value: "true"
         - name: nginx
           image: nginx:latest
           imagePullPolicy: "Always"
