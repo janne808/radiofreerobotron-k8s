@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: web-root-sync
-          image: k8s.gcr.io/git-sync:v3.1.6
+          image: k8s.gcr.io/git-sync:v3.6.0
           volumeMounts:
           - name: nginx-www-root
             mountPath: /tmp/git/app
