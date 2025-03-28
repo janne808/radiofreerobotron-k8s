@@ -19,7 +19,7 @@ spec:
           image: k8s.gcr.io/git-sync:v3.1.5
           volumeMounts:
           - name: nginx-www-root
-            mountPath: /app
+            mountPath: /tmp/git/app
           - name: k8s-deploy-key
             mountPath: /etc/deploy-key-secret
             readOnly: true
@@ -46,9 +46,6 @@ spec:
             - name: nginx-config
               mountPath: /etc/nginx/conf.d/rfr.conf
               subPath: rfr.conf
-            - name: nginx-config
-              mountPath: /app/index.html
-              subPath: index.html
           ports:
             - containerPort: 8000
               name: nginx
