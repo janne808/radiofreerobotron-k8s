@@ -48,7 +48,7 @@ data:
 
            server_name radiofreerobotron.home.arpa www.radiofreerobotron.home.arpa;
 
-           root /app/repo/production-homelab;
+           root /app/repo/;
            index index.html;
 
            location / {
@@ -69,6 +69,12 @@ data:
            # deny git files
            #
            location ~ /\.git {
+                   deny all;
+           }
+           
+           # deny git README.md file
+           #
+           location ~ /README.md {
                    deny all;
            }
     }

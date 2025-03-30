@@ -28,7 +28,7 @@ spec:
             - "-repo=git@github.com:janne808/radiofreerobotron-web-root"
             - "-root=/tmp/git/app"
             - "-dest=repo"
-            - "-branch=main"
+            - "-branch=homelab"
             - "-depth=1"
             - "-ssh-known-hosts=false"
             - "-ssh-key-file=/etc/deploy-key-secret/id_k8s_deploy"
