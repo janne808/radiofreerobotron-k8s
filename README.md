@@ -2,5 +2,5 @@
 
 Build manifests for home lab cluster
 
-Depends on Sealedsecrets, ArgoCD and Traefik installs on cluster
+Depends on NFS provisioner, Sealedsecrets, ArgoCD and Traefik installs on cluster
 
