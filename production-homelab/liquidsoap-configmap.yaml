@@ -29,7 +29,7 @@ data:
          result = string.trim(p.stdout)
          request.create(result)
       else
-         null
+         null()
       end
     end
 
@@ -77,7 +77,7 @@ data:
     #radio = mksafe(radio)
 
     # handle metadata storage
-    radio.on_track(synchronous=false, store_meta)
+    radio.on_track(store_meta)
 
     # compressor/limiter
     #radio = ladspa.sc4(rms_peak=4.0,
