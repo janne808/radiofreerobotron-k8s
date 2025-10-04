@@ -94,10 +94,12 @@ data:
     #                               radio)
 
     # Stream it out.. 24k, 128k
-    output.icecast(%vorbis.cbr(
+    output.icecast(%vorbis.abr(
             samplerate=22050,
-            channels=1,
-            bitrate=24),
+            channels=2,
+            bitrate=32,
+            max_bitrate=64,
+            min_bitrate=16),
             genre="electronic",
             url = "http://www.radiofreerobotron.net/",
             description = "Radio Free Robotron",
@@ -106,7 +108,7 @@ data:
             password=environment.get("ICECAST_SOURCE_PASSWORD"),
             mount="robot_lq.ogg",
             fallible=true,
-            mean(radio))
+            radio)
 
     output.icecast(%vorbis.cbr(
             samplerate=44100,
